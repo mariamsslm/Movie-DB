@@ -39,11 +39,11 @@ app.get('/search',(req,res)=>{
 app.get('/movies/add',(req,res)=>{
     
 })
-app.get('/movies/get',(req,res)=>{
+app.get('/movies/read',(req,res)=>{
     res.send({status:200, data:movies })
     
 })
-app.get('/movies/get/by-date',(req,res)=>{
+app.get('/movies/read/by-date',(req,res)=>{
     const years = movies.slice().sort((a,b)=>{
         const dateA = a.year;
         const dateB = b.year;
@@ -53,7 +53,7 @@ app.get('/movies/get/by-date',(req,res)=>{
     })
     res.send({status:200, data:years})
 })
-app.get('/movies/get/by-raiting',(req,res)=>{
+app.get('/movies/read/by-raiting',(req,res)=>{
     const ratings = movies.slice().sort((a,b)=>{
         const ratingA = a.rating;
         const ratingB = b.rating;
@@ -72,6 +72,17 @@ app.get('/movies/read/by-title',(req,res)=>{
         return 0;
     })
     res.send({status:200, data:titles})
+})
+app.get('/movies/read/id/:id?',(req,res)=>{
+    const movie =parseInt(req.params.id)
+    
+    if(movie){
+        res.send({status:200, data:movie})
+    }
+    else{
+        res.send(`{status:404, error:true, message:'the movie ${movie} does not exist'}`)
+    }
+    
 })
 
 

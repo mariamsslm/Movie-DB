@@ -103,6 +103,17 @@ app.get("/movies/add", (req, res) => {
 });
 
 app.get("/movies/edit", (req, res) => {});
-app.get("/movies/delete", (req, res) => {});
+app.get("/movies/delete/:id", (req, res) => {
+  const movieId = parseInt(req.params.id);
+  const movieIndex = movies.findIndex((movie) => movie.id === movieId);
+  if (movieIndex === -1) {
+    res.send(
+      `{status:404, error:true, message:'the movie ${movieId} does not exist'}`
+    );
+  } else {
+    const movie = movies.splice(movieId);
+    res.send(movie);
+  }
+});
 
 app.listen(3000);

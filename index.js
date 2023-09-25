@@ -127,9 +127,9 @@ app.get("/movies/update/:id", (req, res) => {
     }
 
     if (!isNaN(newRating)) {
-      movies[movieIndex].rating = newRating;
+      movies[movieId].rating = newRating;
     }
-    res.send(movies);
+    res.json(movies);
   } });
 
 

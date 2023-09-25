@@ -2,9 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser=require('body-parser')
 const app = express();
-
 app.listen(3000);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -93,14 +91,16 @@ app.get("/movies/read/by-title", (req, res) => {
   });
   res.send({ status: 200, data: titles });
 });
-app.get("/movies/read/id/:id?", (req, res) => {
-  const movie = parseInt(req.params.id);
-  if (movie) {
-    res.send({ status: 200, data: movie });
-  } else {
+app.get("/movies/read/id/:id", (req, res) => {
+  const movie = req.params.id;
+  if (movie > movies.length || movie < 1) {
     res.send(
       `{status:404, error:true, message:'the movie ${movie} does not exist'}`
     );
+    
+  } else {
+    res.send({ status: 200, data: movie });
+    
   }
 });
 app.post("/movies/add", (req, res) => {

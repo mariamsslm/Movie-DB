@@ -75,7 +75,7 @@ app.get("/movies/read/id/:id?", (req, res) => {
     );
   }
 });
-app.get("/movies/add", (req, res) => {
+app.post("/movies/add", (req, res) => {
   const { title, year, rating } = req.query;
   if (!title || !year || isNaN(year) || year.length !== 4) {
     res.send({
@@ -102,18 +102,35 @@ app.get("/movies/add", (req, res) => {
   }
 });
 
-app.get("/movies/edit", (req, res) => {});
-app.get("/movies/delete/:id", (req, res) => {
-  const movieId = parseInt(req.params.id);
-  const movieIndex = movies.findIndex((movie) => movie.id === movieId);
-  if (movieIndex === -1) {
-    res.send(
-      `{status:404, error:true, message:'the movie ${movieId} does not exist'}`
-    );
-  } else {
-    const movie = movies.splice(movieId);
-    res.send(movie);
+app.get("/movies/delete/:id", (req, res)=>{
+  let movieId = parseInt(req.params.id);
+  if(movieId > movies.length || movieId < 1){
+    res.json({status:404,error:true,message:"error"})
+  }
+  else{
+    movies.splice(movieId -1 ,1);
+    res.json({status:200,data:movies})
   }
 });
+
+app.get("/movies/update/:id", (req, res) => {
+  const movieId = parseInt(req.params.id);
+  const newTitle = req.query.title;
+  const newRating = parseFloat(req.query.rating);
+  
+ 
+  if (movieId > movies.length || movieId < 1) {
+    res.json(`{status:404,error:true,message:'the movie ${id} does not exist'}`)
+  } else {
+    if (newTitle !== undefined) {
+      movies[movieId].title = newTitle;
+    }
+
+    if (!isNaN(newRating)) {
+      movies[movieIndex].rating = newRating;
+    }
+    res.send(movies);
+  } });
+
 
 app.listen(3000);

@@ -1,5 +1,29 @@
-const express = require("express");
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser=require('body-parser')
 const app = express();
+
+app.listen(3000);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}))
+
+const URL='mongodb+srv://mariamsoulayman146:rswQwGfbJdIcBuGW@cluster0.xrtccpt.mongodb.net/?retryWrites=true&w=majority';
+
+(async ()=>{
+  try{
+    await mongoose.connect(URL,{
+      useNewUrlParser:true,
+      useUnifiedTopology:true,
+    });
+    console.log("connected db")
+  }
+  catch(error){
+    console.log("error")
+  }
+})();
+
+
 const date = new Date();
 const movies = [
   { title: "Jaws", year: 1975, rating: 8 },
@@ -7,6 +31,10 @@ const movies = [
   { title: "Brazil", year: 1985, rating: 8 },
   { title: "الإرهاب والكباب", year: 1992, rating: 6.2 },
 ];
+
+
+
+//PQ4Mn8BK0y42hRt2
 
 app.get("/", (req, res) => {
   res.send("OK");
@@ -102,7 +130,7 @@ app.post("/movies/add", (req, res) => {
   }
 });
 
-app.get("/movies/delete/:id", (req, res)=>{
+app.delete("/movies/delete/:id", (req, res)=>{
   let movieId = parseInt(req.params.id);
   if(movieId > movies.length || movieId < 1){
     res.json({status:404,error:true,message:"error"})
@@ -113,24 +141,21 @@ app.get("/movies/delete/:id", (req, res)=>{
   }
 });
 
-app.get("/movies/update/:id", (req, res) => {
+app.put("/movies/update/:id", (req, res) => {
   const movieId = parseInt(req.params.id);
   const newTitle = req.query.title;
   const newRating = parseFloat(req.query.rating);
-  
- 
   if (movieId > movies.length || movieId < 1) {
     res.json(`{status:404,error:true,message:'the movie ${id} does not exist'}`)
   } else {
     if (newTitle !== undefined) {
       movies[movieId].title = newTitle;
     }
-
     if (!isNaN(newRating)) {
       movies[movieId].rating = newRating;
     }
     res.json(movies);
   } });
 
+ 
 
-app.listen(3000);

@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const movie =require('./Movie')
 const bodyParser=require('body-parser')
 const app = express();
 app.listen(3000);
@@ -104,7 +105,7 @@ app.get("/movies/read/id/:id", (req, res) => {
   }
 });
 app.post("/movies/add", (req, res) => {
-  const { title, year, rating } = req.query;
+  const { title, year, rating } = req.body;
   if (!title || !year || isNaN(year) || year.length !== 4) {
     res.send({
       status: 403,
